@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
     strcpy(cwd, argv[2]);
     chdir(cwd);
 
-    char input[50], cmd[PATH_MAX + 1];
+    char input[200], cmd_short[40], cmd[PATH_MAX + 1], args_string[160], *args[20];
 
     while (1) {
         strcpy(cmd, bin);
@@ -18,13 +18,21 @@ int main(int argc, char *argv[]) {
         printf("%s > ", cwd);
         fflush(stdout);
 
-        fgets(input, 50, stdin);
-        sscanf(input, "%s", input);
+        fgets(input, 200, stdin);
+        sscanf(input, "%s %[^\n]", cmd_short, args_string);
+        strcat(cmd, cmd_short);
+        args[0] = cmd;
+        args[1] = bin;
+        args[2] = cwd;
+        args[3] = strtok(args_string, " ");
+        int i = 3;
+        while (args[i] != NULL) {
+            args[++i] = strtok(NULL, " ");
+        }
 
-        strcat(cmd, input);
-        execl(cmd, cmd, bin, cwd, (char*) NULL);
+        execv(cmd, args);
 
-        printf("aash: command not found: %s\n", input);
+        printf("aash: command not found: %s\n", cmd_short);
         fflush(stdout);
     }
 
