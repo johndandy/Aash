@@ -5,37 +5,34 @@
 #include <unistd.h>
 
 int main(int argc, char *argv[]) {
-    char aash[PATH_MAX + 1];
-    strcpy(aash, argv[1]);
-    strcat(aash, "aash");
     char cwd[PATH_MAX + 1];
-    strcpy(cwd, argv[2]);
+    strcpy(cwd, argv[1]);
     
-    if (argc > 4) {
+    if (argc > 3) {
         printf("cd: too many arguments\n");
         fflush(stdout);
-        execl(aash, aash, argv[1], cwd, (char *) NULL);
+        execlp("aash", "aash", argv[1], NULL);
     }
 
-    if (argv[3] == NULL) {
+    if (argv[2] == NULL) {
         chdir(getenv("HOME"));
         getcwd(cwd, sizeof(cwd)); 
     }
-    else if (argv[3][0] == '/') {
-        strcpy(cwd, argv[3]);
+    else if (argv[2][0] == '/') {
+        strcpy(cwd, argv[2]);
     }
     else {
         strcat(cwd, "/");
-        strcat(cwd, argv[3]);
+        strcat(cwd, argv[2]);
     }
 
     if (chdir(cwd) == -1) {
-        printf("cd: not a directory: %s\n", argv[3]);
+        printf("cd: not a directory: %s\n", argv[2]);
         fflush(stdout);
-        execl(aash, aash, argv[1], argv[2], (char *) NULL);
+        execlp("aash", "aash", argv[1], NULL);
     }
     else {
-        execl(aash, aash, argv[1], cwd, (char *) NULL);
+        execlp("aash", "aash", cwd, NULL);
     }
 
     return 0;
