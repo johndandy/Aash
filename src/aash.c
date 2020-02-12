@@ -13,6 +13,11 @@ int main(int argc, char *argv[]) {
     char input[200], cmd_short[40], cmd[PATH_MAX + 1], args_string[160], *args[20];
 
     while (1) {
+        memset(input, 0, sizeof(input));
+        memset(cmd_short, 0, sizeof(cmd_short));
+        memset(cmd, 0, sizeof(cmd));
+        memset(args_string, 0, sizeof(args_string));
+        memset(args, 0, sizeof(args));
         strcpy(cmd, bin);
 
         printf("%s > ", cwd);
